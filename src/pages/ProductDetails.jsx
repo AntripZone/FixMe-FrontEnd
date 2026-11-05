@@ -1,14 +1,15 @@
 import { useParams } from 'react-router'; // Hook useParams para obtener los parámetros de la URL
-import useProduct from '../hooks/useProductss'; // Hook personalizado para obtener los detalles del producto
+import useProducts from '../hooks/useProducts'; // Hook personalizado para obtener los detalles del producto
 import AppBar from '../components/Appbar';   // Componente AppBar
-import Footer from '../components/Footer';  // Componente Footer 
+import Footer from '../components/Footer';  // Componente Footer
 
 const ProductDetails = () => {
-    const { product } = useParams(); // Obtiene el ID del producto de los parámetros de la URL
-    const { data, isLoading, error } = useProduct(`httpsfakestoreapi.com/data/${product}`); // Hook personalizado para obtener los detalles del producto
+    const { id } = useParams(); // Obtiene el ID del producto de los parámetros de la URL
+    const { products: data, loading: isLoading, error } = useProducts(`https://fakestoreapi.com/products/${id}`); // Hook personalizado para obtener los detalles del producto
 
     if (isLoading) return <div className="text-center mt-10">Loading...</div>; // Muestra un mensaje de carga mientras se obtienen los datos
     if (error) return <div className="text-center mt-10 text-red-500">Error loading product details.</div>; // Muestra un mensaje de error si ocurre un problema al cargar los datos
+    if(!data || Array.isArray(data)) return null;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -26,8 +27,8 @@ const ProductDetails = () => {
                         <p className="text-lg font-semibold mb-4">Price: ${data?.price}</p>
                         <p className="text-sm text-gray-500">Category: {data?.category}</p>
                         <div className="flex items-center mt-4">
-                            <span className="text-yellow-500 font-bold">{data?.rating.rate}</span>
-                            <span className="ml-2 text-gray-600">({data?.rating.count} reviews)</span>
+                            <span className="text-yellow-500 font-bold">{data?.rating?.rate}</span>
+                            <span className="ml-2 text-gray-600">({data?.rating?.count} reviews)</span>
                         </div>
                     </div>
                 </div>

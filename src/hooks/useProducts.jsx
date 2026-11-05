@@ -1,19 +1,20 @@
-import { useReducer } from "react"; 
+import { useReducer, useEffect } from "react";
+import axios from 'axios';
 
 const initialState = {
-    products: null,
+    products: [],
     loading: true,
     error: null,
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
+        case "FETCH_LOADING":
+            return { ...state, loading: true, error: null };
         case "FETCH_SUCCESS":
             return { ...state, products: action.payload, loading: false, error: null };
         case "FETCH_ERROR":
             return { ...state, products: null, loading: false, error: action.payload };
-        case "FETCH_LOADING":
-            return { ...state, loading: true, error: null };
         default:
             return state;
     }
